@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="@string/title" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/etInterval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/etInterval_Hint"
+        android:inputType="numberSigned"
+        android:text="@string/etInterval" >
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_margin="15dp">
+        
+			<Button
+        		android:id="@+id/btStart"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:text="@string/btStart" />
+    </LinearLayout>
+    
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_margin="15dp">
+        
+			<Button
+			    android:id="@+id/btStop"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="@string/btStop" />
+
+	</LinearLayout>
+	
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_margin="15dp">
+        
+			<Button
+			    android:id="@+id/btBind"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="@string/btBind"
+			    android:visibility="gone" />
+
+	</LinearLayout>
+	
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_margin="15dp">
+        
+			<Button
+			    android:id="@+id/btUnbind"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="@string/btUnbind"
+			    android:visibility="gone" />
+
+	</LinearLayout>
+	
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_margin="15dp">
+
+		<Button
+		    android:id="@+id/btExit"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/btExit" />
+
+	</LinearLayout>
+
+</LinearLayout>
