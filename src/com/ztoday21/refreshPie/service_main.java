@@ -24,7 +24,6 @@ public class service_main extends Service implements OnTouchListener {
 	public void onCreate() 
 	{
         super.onCreate();
-        //Toast.makeText(this, "onCreate()", Toast.LENGTH_SHORT).show();
     }
  
 	@Override
@@ -46,15 +45,12 @@ public class service_main extends Service implements OnTouchListener {
 			// 리프레시어플 찾기
 			PackageManager pm = getPackageManager();
 			_refreshIntent = pm.getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
-			//_refreshIntent = pm.getLaunchIntentForPackage("com.ztoday21.refreshman");
 			
 			if(null != _refreshIntent)
 			{
-				//Don't setText, this will give the view size
 				_tv = new TextView(this);
 				_tv.setOnTouchListener(this);
 				
-				//You must set FLAG_NOT_FOCUSABLE, otherwise your view will interfere with the keyguard
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
 				            WindowManager.LayoutParams.WRAP_CONTENT,
 				            WindowManager.LayoutParams.WRAP_CONTENT,
@@ -86,8 +82,6 @@ public class service_main extends Service implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
 	{
-		//Toast.makeText(service_main.this, "Touch " + _touchCnt, Toast.LENGTH_SHORT).show();
-		
 		//if( MotionEvent.ACTION_DOWN == event.getActionMasked() )
 		{
 			_touchCnt++;
@@ -100,7 +94,6 @@ public class service_main extends Service implements OnTouchListener {
 				// 리프레시 어플 실행
 				if(null != _refreshIntent)
 				{
-					//Toast.makeText(service_main.this, "Reeeeeeeeeeefresh", Toast.LENGTH_SHORT).show();
 					startActivity(_refreshIntent);
 				}
 			}

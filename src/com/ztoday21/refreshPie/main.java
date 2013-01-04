@@ -35,14 +35,6 @@ public class main extends Activity {
 	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btExit).setOnClickListener(mClickListener);
 	    
-	    // 파일 일기
-		File file = new File(main.path);
-		
-		if( false == file.exists() )
-		{
-			file.mkdirs();
-		}
-		
 		// 스트림 읽기
 		try
 		{
@@ -104,8 +96,6 @@ public class main extends Activity {
 				}
 				break;
 			}
-			
-			//Toast.makeText(main.this, ((Button)v).getText().toString() +  " 버튼 눌림", Toast.LENGTH_SHORT).show();
 		}
 	};
 }
