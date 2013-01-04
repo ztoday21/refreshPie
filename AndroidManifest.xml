@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ztoday21.refreshman"
+    package="com.ztoday21.refreshPie"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,13 +14,13 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name="com.ztoday21.refreshman.main">
+        <activity android:name="com.ztoday21.refreshPie.main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name="service_main">
+        <service android:name="com.ztoday21.refreshPie.service_main">
             <intent-filter>
                 <action android:name="com.ztoday21.refreshman"/>
             </intent-filter>
