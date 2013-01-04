@@ -94,6 +94,15 @@ public class service_main extends Service implements OnTouchListener {
 				// 리프레시 어플 실행
 				if(null != _refreshIntent)
 				{
+					try
+					{
+						Thread.sleep(500);
+					}
+					catch( InterruptedException e )
+					{
+						
+					}
+					
 					startActivity(_refreshIntent);
 				}
 			}
