@@ -1,8 +1,12 @@
 package com.ztoday21.refreshman;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +14,9 @@ import android.widget.Toast;
 
 
 public class main extends Activity {
+	
+	public static String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/refreshman/";
+	public static String fileName = "refresh_interval";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -25,6 +32,28 @@ public class main extends Activity {
 	    findViewById(R.id.btBind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btExit).setOnClickListener(mClickListener);
+	    
+	    // 파일 일기
+		File file = new File(main.path);
+		
+		if( false == file.exists() )
+		{
+			file.mkdirs();
+		}
+		
+		// 스트림 읽기
+		try
+		{
+			SharedPreferences prefs = getSharedPreferences("refreshman", MODE_PRIVATE);
+
+			EditText teInterval = (EditText)findViewById(R.id.etInterval);
+			teInterval.setText( prefs.getString("interval", "5") );
+		}
+		catch(Exception e) 
+		{
+			Toast.makeText(main.this, e.toString(), Toast.LENGTH_LONG).show();
+		}
+
 	}
 
 	private Button.OnClickListener mClickListener = new View.OnClickListener()
@@ -52,12 +81,29 @@ public class main extends Activity {
 					
 			case R.id.btExit:
 				{
+					// 파일 저장
+					// 스트림 쓰기
+					try
+					{
+						SharedPreferences prefs = getSharedPreferences("refreshman", MODE_PRIVATE);
+						SharedPreferences.Editor ed = prefs.edit();
+
+						EditText teInterval = (EditText)findViewById(R.id.etInterval);
+						ed.putString("interval", teInterval.getText().toString());
+						ed.commit();
+					}
+					catch(Exception e) 
+					{
+						Toast.makeText(main.this, e.toString(), Toast.LENGTH_LONG).show();
+					}
+					
+					
 					finish();
 				}
 				break;
 			}
 			
-			Toast.makeText(main.this, ((Button)v).getText().toString() +  " 버튼 눌림", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(main.this, ((Button)v).getText().toString() +  " 버튼 눌림", Toast.LENGTH_SHORT).show();
 		}
 	};
 }

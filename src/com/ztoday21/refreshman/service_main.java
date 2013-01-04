@@ -16,8 +16,9 @@ import android.widget.Toast;
 public class service_main extends Service implements OnTouchListener {
 	
 	// 값 공유
-	public static int _interval = 0;
-	public Intent _refreshIntent;
+	public static int	_interval = 0;
+	public TextView		_tv;		
+	public Intent		_refreshIntent;
 
 	@Override
 	public void onCreate() 
@@ -31,6 +32,9 @@ public class service_main extends Service implements OnTouchListener {
     {
         super.onDestroy();
         Toast.makeText(this, "서비스 중지됨", Toast.LENGTH_SHORT).show();
+        
+        WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        winmgr.removeView(_tv);
     }
     
 	@Override
@@ -41,13 +45,14 @@ public class service_main extends Service implements OnTouchListener {
 			// 원하는 작업을 하자
 			// 리프레시어플 찾기
 			PackageManager pm = getPackageManager();
-			_refreshIntent = pm.getLaunchIntentForPackage("Refresh2");
+			_refreshIntent = pm.getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
+			//_refreshIntent = pm.getLaunchIntentForPackage("com.ztoday21.refreshman");
 			
 			if(null != _refreshIntent)
 			{
 				//Don't setText, this will give the view size
-				TextView tv = new TextView(this);
-				tv.setOnTouchListener(this);
+				_tv = new TextView(this);
+				_tv.setOnTouchListener(this);
 				
 				//You must set FLAG_NOT_FOCUSABLE, otherwise your view will interfere with the keyguard
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
@@ -60,7 +65,7 @@ public class service_main extends Service implements OnTouchListener {
 				
 				WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-				winmgr.addView(tv, lp);	
+				winmgr.addView(_tv, lp);	
 				
 				Toast.makeText(this, "서비스 시작됨", Toast.LENGTH_SHORT).show();
 			}
@@ -72,7 +77,7 @@ public class service_main extends Service implements OnTouchListener {
 			}
 		}
 		
-		return Service.START_STICKY;
+		return Service.START_NOT_STICKY;
 	}
 	
 	//---------------------------------
@@ -81,9 +86,9 @@ public class service_main extends Service implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
 	{
-		Toast.makeText(service_main.this, "Touch", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(service_main.this, "Touch " + _touchCnt, Toast.LENGTH_SHORT).show();
 		
-		if( MotionEvent.ACTION_UP == event.getAction() )
+		//if( MotionEvent.ACTION_DOWN == event.getActionMasked() )
 		{
 			_touchCnt++;
 			
@@ -95,6 +100,7 @@ public class service_main extends Service implements OnTouchListener {
 				// 리프레시 어플 실행
 				if(null != _refreshIntent)
 				{
+					//Toast.makeText(service_main.this, "Reeeeeeeeeeefresh", Toast.LENGTH_SHORT).show();
 					startActivity(_refreshIntent);
 				}
 			}
