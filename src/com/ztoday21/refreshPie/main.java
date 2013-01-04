@@ -1,7 +1,5 @@
 package com.ztoday21.refreshPie;
 
-import java.io.File;
-
 import com.ztoday21.refreshPie.R;
 
 import android.app.Activity;
