@@ -17,6 +17,9 @@ public class service_main extends Service implements OnTouchListener {
 	
 	// 값 공유
 	public static int	_interval = 0;
+	public static int	_timeInterval = 0;
+	
+	// 내부 사
 	public TextView		_tv;		
 	public Intent		_refreshIntent;
 
@@ -32,8 +35,13 @@ public class service_main extends Service implements OnTouchListener {
         super.onDestroy();
         Toast.makeText(this, "서비스 중지됨", Toast.LENGTH_SHORT).show();
         
+        // window manager 에서 view 제거
+        // 서비스가 멈춰도 이부분이 제거가 안되었음
         WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         winmgr.removeView(_tv);
+        
+        // 후에 좀 더 정확한 서비스 기능 알아야 함
+        
     }
     
 	@Override
@@ -48,6 +56,7 @@ public class service_main extends Service implements OnTouchListener {
 			
 			if(null != _refreshIntent)
 			{
+				// text view 를 window manager 에 등록 후 touch event 연결 
 				_tv = new TextView(this);
 				_tv.setOnTouchListener(this);
 				
@@ -67,10 +76,15 @@ public class service_main extends Service implements OnTouchListener {
 			}
 			else
 			{
+				// 서비스 시작 실패
 				stopSelf(startId);
 				
 				Toast.makeText(this, "서비스 시작 실패 Refresh2 없음", Toast.LENGTH_SHORT).show();
 			}
+		}
+		else
+		{
+			Toast.makeText(this, "refreshPie 서비스 종료 (재시작 안함)", Toast.LENGTH_LONG).show();
 		}
 		
 		return Service.START_NOT_STICKY;
@@ -82,6 +96,9 @@ public class service_main extends Service implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
 	{
+		// 이벤트에 대한 기능 확인 필요 
+		// 왜 일케 알아야 할게 많을 까나... -_-;;;
+		
 		//if( MotionEvent.ACTION_DOWN == event.getActionMasked() )
 		{
 			_touchCnt++;
@@ -96,11 +113,11 @@ public class service_main extends Service implements OnTouchListener {
 				{
 					try
 					{
-						Thread.sleep(500);
+						Thread.sleep(service_main._timeInterval);
 					}
 					catch( InterruptedException e )
 					{
-						
+						Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
 					}
 					
 					startActivity(_refreshIntent);

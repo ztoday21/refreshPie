@@ -1,13 +1,15 @@
 <resources>
 
     <string name="app_name">refreshPie</string>
-    <string name="title">Input Interval (Touch Count)</string>
-    <string name="etInterval">5</string>
+    <string name="intervaltitle">Input Interval\n(Touch Count)</string>
+    <string name="etInterval">3</string>
 	<string name="etInterval_Hint">Touch Count</string>
 	<string name="btStart">Start</string>
 	<string name="btStop">Stop</string>
 	<string name="btBind">Bind</string>
 	<string name="btUnbind">Unbind</string>
 	<string name="btExit">Exit</string>
+	<string name="etTimeInterval">300</string>
+	<string name="timeIntervalTitle">Input Delay Time Interval\ninput ms(1 second is 1000 ms)</string>
 	
 </resources>

@@ -4,25 +4,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/title" >
-    </TextView>
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/etInterval"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/etInterval_Hint"
-        android:inputType="numberSigned"
-        android:text="@string/etInterval" >
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="@string/intervaltitle" />
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/etInterval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/etInterval_Hint"
+            android:inputType="numberSigned"
+            android:text="@string/etInterval" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="@string/timeIntervalTitle" />
+
+        <EditText
+            android:id="@+id/etTimeInterval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/etInterval_Hint"
+            android:inputType="numberSigned"
+            android:text="@string/etTimeInterval" />
+
+    </LinearLayout>
 
     <LinearLayout 
         android:layout_width="fill_parent"

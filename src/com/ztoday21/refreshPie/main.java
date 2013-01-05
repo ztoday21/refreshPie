@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 
 public class main extends Activity {
 	
-	public static String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/refreshman/";
-	public static String fileName = "refresh_interval";
+	public static String _saveName = "refreshPie";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -36,10 +34,13 @@ public class main extends Activity {
 		// 스트림 읽기
 		try
 		{
-			SharedPreferences prefs = getSharedPreferences("refreshman", MODE_PRIVATE);
+			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
 
-			EditText teInterval = (EditText)findViewById(R.id.etInterval);
-			teInterval.setText( prefs.getString("interval", "5") );
+			EditText etInterval = (EditText)findViewById(R.id.etInterval);
+			etInterval.setText( prefs.getString("interval", "3") );
+			
+			EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
+			etTimeInterval.setText( prefs.getString("time_interval", "300") );
 		}
 		catch(Exception e) 
 		{
@@ -56,8 +57,11 @@ public class main extends Activity {
 			{
 			case R.id.btStart:
 				{
-					EditText teInterval = (EditText)findViewById(R.id.etInterval);
-					service_main._interval = Integer.parseInt(teInterval.getText().toString());
+					EditText etInterval = (EditText)findViewById(R.id.etInterval);
+					service_main._interval = Integer.parseInt(etInterval.getText().toString());
+					
+					EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
+					service_main._timeInterval = Integer.parseInt(etTimeInterval.getText().toString());
 					
 					 Intent bindIntent = new Intent(main.this, service_main.class);
 					 startService(bindIntent);
@@ -77,11 +81,15 @@ public class main extends Activity {
 					// 스트림 쓰기
 					try
 					{
-						SharedPreferences prefs = getSharedPreferences("refreshman", MODE_PRIVATE);
+						SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
 						SharedPreferences.Editor ed = prefs.edit();
 
-						EditText teInterval = (EditText)findViewById(R.id.etInterval);
-						ed.putString("interval", teInterval.getText().toString());
+						EditText etInterval = (EditText)findViewById(R.id.etInterval);
+						ed.putString("interval", etInterval.getText().toString());
+						
+						EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
+						ed.putString("time_interval", etTimeInterval.getText().toString());
+						
 						ed.commit();
 					}
 					catch(Exception e) 
