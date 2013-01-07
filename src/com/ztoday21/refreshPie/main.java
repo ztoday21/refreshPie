@@ -76,9 +76,11 @@ public class main extends Activity {
 			EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
 			ed.putString("time_interval", etTimeInterval.getText().toString());
 			
+			/*
 			CheckBox cbRestart = (CheckBox)findViewById(R.id.cbRestart);
 			ed.putBoolean("restart", service_main._restart);
 			cbRestart.setChecked(service_main._restart);
+			*/
 			
 			ed.commit();
 		}
@@ -104,8 +106,10 @@ public class main extends Activity {
 					EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
 					service_main._timeInterval = Integer.parseInt(etTimeInterval.getText().toString());
 					
+					/*
 					CheckBox cbRestart = (CheckBox)findViewById(R.id.cbRestart);
 					service_main._restart = cbRestart.isChecked();
+					*/
 					
 					Intent bindIntent = new Intent(main.this, service_main.class);
 					startService(bindIntent);

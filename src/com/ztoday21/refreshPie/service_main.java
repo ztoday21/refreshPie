@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,11 +19,13 @@ public class service_main extends Service implements OnTouchListener {
 	// 값 공유
 	public static int		_interval = 0;
 	public static int		_timeInterval = 0;
-	public static boolean 	_restart = false;
+	//public static boolean 	_restart = false;
 	
 	// 내부 사
-	public TextView		_tv;		
-	public Intent		_refreshIntent;
+	public TextView		_tv = null;		
+	public Intent		_refreshIntent = null;
+	
+	public InputMethodManager _ime = null;
 
 	@Override
 	public void onCreate() 
@@ -71,7 +74,11 @@ public class service_main extends Service implements OnTouchListener {
 				
 				WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-				winmgr.addView(_tv, lp);	
+				winmgr.addView(_tv, lp);
+				
+				// ime check
+				_ime = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				 
 				
 				Toast.makeText(this, "서비스 시작됨", Toast.LENGTH_SHORT).show();
 			}
@@ -84,19 +91,14 @@ public class service_main extends Service implements OnTouchListener {
 		}
 		else
 		{
-			if( false ==_restart )
+			//if( false ==_restart )
 			{
 				stopSelf(startId);
 				Toast.makeText(this, "재시작 요청 무시 재시작 안함", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
-		if( false ==_restart )
-		{
-			return Service.START_NOT_STICKY;
-		}
-		
-		return Service.START_STICKY;
+		return Service.START_NOT_STICKY;
 	}
 	
 	//---------------------------------
@@ -110,13 +112,24 @@ public class service_main extends Service implements OnTouchListener {
 		
 		//if( MotionEvent.ACTION_DOWN == event.getActionMasked() )
 		{
-			_touchCnt++;
+			if( null != _ime )
+			{
+				// 키보드가 비활성 일때만 
+				if( false == _ime.isAcceptingText() )
+				{
+					_touchCnt++;
+				}
+			}
+			else
+			{
+				_touchCnt++;
+			}
 			
 			if( service_main._interval <= _touchCnt )
 			{
 				// 터치 초기화
 				_touchCnt = 0;
-				
+		
 				// 리프레시 어플 실행
 				if(null != _refreshIntent)
 				{
