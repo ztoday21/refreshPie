@@ -16,8 +16,9 @@ import android.widget.Toast;
 public class service_main extends Service implements OnTouchListener {
 	
 	// 값 공유
-	public static int	_interval = 0;
-	public static int	_timeInterval = 0;
+	public static int		_interval = 0;
+	public static int		_timeInterval = 0;
+	public static boolean 	_restart = false;
 	
 	// 내부 사
 	public TextView		_tv;		
@@ -77,17 +78,25 @@ public class service_main extends Service implements OnTouchListener {
 			else
 			{
 				// 서비스 시작 실패
-				stopSelf(startId);
-				
+				stopSelf(startId);		
 				Toast.makeText(this, "서비스 시작 실패 Refresh2 없음", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else
 		{
-			Toast.makeText(this, "refreshPie 서비스 종료 (재시작 안함)", Toast.LENGTH_LONG).show();
+			if( false ==_restart )
+			{
+				stopSelf(startId);
+				Toast.makeText(this, "재시작 요청 무시 재시작 안함", Toast.LENGTH_SHORT).show();
+			}
 		}
 		
-		return Service.START_NOT_STICKY;
+		if( false ==_restart )
+		{
+			return Service.START_NOT_STICKY;
+		}
+		
+		return Service.START_STICKY;
 	}
 	
 	//---------------------------------

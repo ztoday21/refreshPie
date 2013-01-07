@@ -10,6 +10,7 @@
 	<string name="btUnbind">Unbind</string>
 	<string name="btExit">Exit</string>
 	<string name="etTimeInterval">300</string>
-	<string name="timeIntervalTitle">Input Delay Time Interval\ninput ms(1 second is 1000 ms)</string>
+	<string name="timeIntervalTitle">Input Delay Time\ninput ms(1 second is 1000 ms)</string>
+	<string name="cbRestart">restart</string>
 	
 </resources>
