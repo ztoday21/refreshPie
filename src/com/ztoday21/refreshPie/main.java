@@ -42,7 +42,7 @@ public class main extends Activity {
 			etInterval.setText( prefs.getString("interval", "3") );
 			
 			EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
-			etTimeInterval.setText( prefs.getString("time_interval", "300") );
+			etTimeInterval.setText( prefs.getString("time_interval", "200") );
 			
 			CheckBox cbRestart = (CheckBox)findViewById(R.id.cbRestart);
 			cbRestart.setChecked(prefs.getBoolean("restart", false));
