@@ -52,8 +52,7 @@ public class service_main extends Service implements OnTouchListener {
 		// 원하는 작업을 하자
 		// 리프레시어플 찾기
 		PackageManager pm = getPackageManager();
-		_refreshIntent = pm
-				.getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
+		_refreshIntent = pm.getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
 
 		if (null != _refreshIntent) 
 		{
@@ -83,7 +82,7 @@ public class service_main extends Service implements OnTouchListener {
 					Toast.LENGTH_SHORT).show();
 		}
 
-		return Service.START_NOT_STICKY;
+		return Service.START_STICKY;
 	}
 
 	// ---------------------------------
