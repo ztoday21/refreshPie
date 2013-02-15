@@ -12,6 +12,6 @@
 	<string name="etTimeInterval">200</string>
 	<string name="timeIntervalTitle">Input Delay Time\ninput ms(1 second is 1000 ms)</string>
 	<string name="cbRestart">restart</string>
-	<string name="app_title">refreshPie 1.0.7</string>
+	<string name="app_title">refreshPie 1.1.0</string>
 	
 </resources>
