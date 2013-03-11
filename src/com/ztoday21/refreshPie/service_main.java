@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,7 +95,8 @@ public class service_main extends Service implements OnTouchListener {
 		// 이벤트에 대한 기능 확인 필요 
 		// 왜 일케 알아야 할게 많을 까나... -_-;;;
 		
-		//if( MotionEvent.ACTION_DOWN == event.getActionMasked() )
+		//InputMethodManager ime = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		//if( false == ime.isAcceptingText() )
 		{
 			_touchCnt++;
 			
