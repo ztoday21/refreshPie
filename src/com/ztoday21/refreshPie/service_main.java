@@ -2,12 +2,15 @@ package com.ztoday21.refreshPie;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,6 +28,42 @@ public class service_main extends Service implements OnTouchListener {
 	// 내부 사용
 	public TextView		_tv = null;		
 	public Intent		_refreshIntent = null;
+	
+	@SuppressLint("HandlerLeak")
+	public Handler _handler = new Handler() 
+	{
+		public void handleMessage(Message msg)
+		{
+			// 리프레시 어플 실행
+			if(null != _refreshIntent)
+			{
+				startActivity(_refreshIntent);
+			}
+			else
+			{
+				// 크레마 샤인 1.2.10 버전은 여기로 들어온다.
+				// 하지만 다른 어플은 구분 못함. 후훗
+				try
+				{
+					Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+					process.getInputStream().close();
+				    process.getOutputStream().close();
+				    process.getErrorStream().close();
+				    process.waitFor();
+				}
+				catch(IOException e)
+				{
+					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+				}
+				catch( InterruptedException e )
+				{
+					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+				}
+			}
+		}	
+	};
 
 	@Override
 	public void onCreate() 
@@ -113,43 +152,7 @@ public class service_main extends Service implements OnTouchListener {
 				// 터치 초기화
 				_touchCnt = 0;
 				
-				try
-				{
-					Thread.sleep(service_main._timeInterval);
-				}
-				catch( InterruptedException e )
-				{
-					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
-				} 
-				
-				// 리프레시 어플 실행
-				if(null != _refreshIntent)
-				{
-					startActivity(_refreshIntent);
-				}
-				else
-				{
-					// 크레마 샤인 1.2.10 버전은 여기로 들어온다.
-					// 하지만 다른 어플은 구분 못함. 후훗
-					try
-					{
-						Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
-						process.getInputStream().close();
-					    process.getOutputStream().close();
-					    process.getErrorStream().close();
-					    process.waitFor();
-					}
-					catch(IOException e)
-					{
-						Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
-						e.printStackTrace();
-					}
-					catch( InterruptedException e )
-					{
-						Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
-						e.printStackTrace();
-					}
-				}
+				_handler.sendEmptyMessageDelayed(0, service_main._timeInterval);
 			}
 		}
 		
