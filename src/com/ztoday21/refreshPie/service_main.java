@@ -1,16 +1,17 @@
 package com.ztoday21.refreshPie;
 
+import java.io.IOException;
+
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,10 +20,11 @@ public class service_main extends Service implements OnTouchListener {
 	// 값 공유
 	public static int		_interval = 0;
 	public static int		_timeInterval = 0;
+	public static boolean	_isRunning = false;
 	
-	// 내부 사
-	public TextView		_tv;		
-	public Intent		_refreshIntent;
+	// 내부 사용
+	public TextView		_tv = null;		
+	public Intent		_refreshIntent = null;
 
 	@Override
 	public void onCreate() 
@@ -35,6 +37,7 @@ public class service_main extends Service implements OnTouchListener {
     {
         super.onDestroy();
         Toast.makeText(this, "서비스 중지됨", Toast.LENGTH_SHORT).show();
+        _isRunning = false;
         
         // window manager 에서 view 제거
         // 서비스가 멈춰도 이부분이 제거가 안되었음
@@ -52,10 +55,17 @@ public class service_main extends Service implements OnTouchListener {
 		{
 			// 원하는 작업을 하자
 			// 리프레시어플 찾기
-			PackageManager pm = getPackageManager();
-			_refreshIntent = pm.getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
 			
-			if(null != _refreshIntent)
+			// 크레마 터치
+			_refreshIntent = getPackageManager().getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
+
+			// 크레마 샤인 -- 이번 버전 부터는 사용 안함
+			
+			if(true == _isRunning)
+			{
+				Toast.makeText(this, "이미 서비스가 실행중입니다.", Toast.LENGTH_SHORT).show();
+			}
+			else
 			{
 				// text view 를 window manager 에 등록 후 touch event 연결 
 				_tv = new TextView(this);
@@ -74,16 +84,19 @@ public class service_main extends Service implements OnTouchListener {
 				winmgr.addView(_tv, lp);	
 				
 				Toast.makeText(this, "서비스 시작됨", Toast.LENGTH_SHORT).show();
-			}
-			else
-			{
-				// 서비스 시작 실패
-				stopSelf(startId);		
-				Toast.makeText(this, "서비스 시작 실패 Refresh2 없음", Toast.LENGTH_SHORT).show();
+				_isRunning = true;
 			}
 		}
 		
 		return Service.START_STICKY;
+	}
+	
+	public Intent getIntentByLabel(String pkg, String cls) {
+		Intent i = new Intent();
+		i.setComponent(new ComponentName(pkg, cls));
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return i;
 	}
 	
 	//---------------------------------
@@ -92,11 +105,6 @@ public class service_main extends Service implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
 	{
-		// 이벤트에 대한 기능 확인 필요 
-		// 왜 일케 알아야 할게 많을 까나... -_-;;;
-		
-		//InputMethodManager ime = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		//if( false == ime.isAcceptingText() )
 		{
 			_touchCnt++;
 			
@@ -105,19 +113,42 @@ public class service_main extends Service implements OnTouchListener {
 				// 터치 초기화
 				_touchCnt = 0;
 				
+				try
+				{
+					Thread.sleep(service_main._timeInterval);
+				}
+				catch( InterruptedException e )
+				{
+					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+				} 
+				
 				// 리프레시 어플 실행
 				if(null != _refreshIntent)
 				{
+					startActivity(_refreshIntent);
+				}
+				else
+				{
+					// 크레마 샤인 1.2.10 버전은 여기로 들어온다.
+					// 하지만 다른 어플은 구분 못함. 후훗
 					try
 					{
-						Thread.sleep(service_main._timeInterval);
+						Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+						process.getInputStream().close();
+					    process.getOutputStream().close();
+					    process.getErrorStream().close();
+					    process.waitFor();
+					}
+					catch(IOException e)
+					{
+						Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+						e.printStackTrace();
 					}
 					catch( InterruptedException e )
 					{
 						Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+						e.printStackTrace();
 					}
-					
-					startActivity(_refreshIntent);
 				}
 			}
 		}
@@ -127,7 +158,6 @@ public class service_main extends Service implements OnTouchListener {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

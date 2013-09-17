@@ -1,13 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ztoday21.refreshPie"
     android:versionCode="1"
-    android:versionName="1.1.1" >
+    android:versionName="1.1.3" >
+<uses-sdk android:targetSdkVersion="18" android:minSdkVersion="8" android:maxSdkVersion="18"/>
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="10" android:maxSdkVersion="17"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -20,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name="com.ztoday21.refreshPie.service_main">
+        <service android:name="com.ztoday21.refreshPie.service_main"
+            android:exported="false">>
             <intent-filter>
                 <action android:name="com.ztoday21.refreshman"/>
             </intent-filter>
