@@ -6,12 +6,18 @@
 	<string name="etInterval_Hint">Touch Count</string>
 	<string name="btStart">Start</string>
 	<string name="btStop">Stop</string>
-	<string name="btBind">Bind</string>
+	<string name="btSetting">Setting</string>
 	<string name="btUnbind">Unbind</string>
 	<string name="btExit">Exit</string>
 	<string name="etTimeInterval">200</string>
 	<string name="timeIntervalTitle">Input Delay Time\ninput ms(1 second is 1000 ms)</string>
 	<string name="cbRestart">restart</string>
-	<string name="app_title">refreshPie 1.1.3</string>
+	<string name="app_title">refreshPie 1.1.5</string>
+	<string name="classname">화면 클래스명</string>
+	<string name="add">추가</string>
+	<string name="delete">삭제</string>
+	<string name="autostart">자동실행</string>
+	<string name="EnableAppFilter">등록된 화면(Activity)에서만 실행</string>
+	<string name="close">닫기</string><string name="logFrontActivityClassname">활성화면 클래스이름 저장 (/sdcard/frontactivity.txt)</string><string name="save">저장</string>
 	
 </resources>

@@ -1,13 +1,21 @@
 package com.ztoday21.refreshPie;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -28,12 +36,55 @@ public class service_main extends Service implements OnTouchListener {
 	// 내부 사용
 	public TextView		_tv = null;		
 	public Intent		_refreshIntent = null;
-	
+
+	SharedPreferences prefs;
+	private ArrayList<String> classNames;
+
 	@SuppressLint("HandlerLeak")
 	public Handler _handler = new Handler() 
 	{
+		private void logToFile(String activityClassName) {
+			final String filePath =Environment.getExternalStorageDirectory() + "/frontactivity.txt";
+
+
+			try {
+				@SuppressWarnings("resource")
+				RandomAccessFile file = new RandomAccessFile(filePath, "rw");
+				file.seek(file.length());
+				file.writeBytes("\r\n" + activityClassName);
+			}
+			catch (IOException e) {
+				Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+
+		}
+
 		public void handleMessage(Message msg)
 		{
+
+			ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+			// get the info from the currently running task
+			List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+
+			ComponentName componentInfo = taskInfo.get(0).topActivity;
+
+			String frontActivityClassName =   componentInfo.getClassName();
+
+			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
+				String log =   "class : " + frontActivityClassName;
+//				Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
+				logToFile(log);
+			}
+
+			//최상단 화면 Classname 필터링
+			if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
+				if (classNames.indexOf(frontActivityClassName) == -1)
+					return;
+			}
+
+
 			// 리프레시 어플 실행
 			if(null != _refreshIntent)
 			{
@@ -69,6 +120,9 @@ public class service_main extends Service implements OnTouchListener {
 	public void onCreate() 
 	{
         super.onCreate();
+
+		prefs = getSharedPreferences(main._saveName, MODE_PRIVATE);
+
     }
  
 	@Override
@@ -120,8 +174,10 @@ public class service_main extends Service implements OnTouchListener {
 				
 				WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-				winmgr.addView(_tv, lp);	
-				
+				winmgr.addView(_tv, lp);
+
+				loadSetting();
+
 				Toast.makeText(this, "서비스 시작됨", Toast.LENGTH_SHORT).show();
 				_isRunning = true;
 			}
@@ -129,7 +185,16 @@ public class service_main extends Service implements OnTouchListener {
 		
 		return Service.START_STICKY;
 	}
-	
+
+	@SuppressLint("NewApi")
+	private void loadSetting() {
+		Set<String> setClassNames = prefs.getStringSet(Setting.keyClassNames, new HashSet<String>());
+		classNames = new ArrayList<String>(setClassNames);
+
+		_timeInterval = Integer.parseInt(prefs.getString("time_interval", main.defaultTimeInterval));
+		_interval = Integer.parseInt(prefs.getString("interval", main.defaultInterval));
+	}
+
 	public Intent getIntentByLabel(String pkg, String cls) {
 		Intent i = new Intent();
 		i.setComponent(new ComponentName(pkg, cls));

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+		<CheckBox
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/autostart"
+				android:id="@+id/checkBoxAutostart"/>
+
+	</LinearLayout>
+
+	<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:background="@android:color/black"/>
+
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+
+		<CheckBox
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/EnableAppFilter"
+				android:id="@+id/checkBoxEnableActivityFilter"
+				android:longClickable="false"/>
+
+		<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center">
+
+			<EditText
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/etClassname"
+					android:layout_gravity="center"
+					android:layout_weight="1"
+					android:hint="@string/classname"/>
+
+			<Button
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/add"
+					android:id="@+id/buttonAddClassname"
+					android:layout_gravity="center"/>
+
+			<Button
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/delete"
+					android:id="@+id/buttonDeleteClassname"
+					android:layout_gravity="center"/>
+		</LinearLayout>
+		<ListView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:id="@+id/listViewClassnames"
+				android:choiceMode="singleChoice"/>
+
+
+	</LinearLayout>
+
+	<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:background="@android:color/black"/>
+
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+		<CheckBox
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/logFrontActivityClassname"
+				android:id="@+id/checkboxLogFrontActivityClassname"/>
+
+	</LinearLayout>
+
+	<Button
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/save"
+			android:id="@+id/buttonClose"
+			android:layout_gravity="center"/>
+
+</LinearLayout>

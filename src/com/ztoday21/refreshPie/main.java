@@ -1,7 +1,5 @@
 package com.ztoday21.refreshPie;
 
-import com.ztoday21.refreshPie.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +15,8 @@ import android.widget.Toast;
 public class main extends Activity {
 	
 	public static String _saveName = "refreshPie";
+	public static final String defaultInterval = "3";
+	public static final String defaultTimeInterval = "200";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -29,20 +29,21 @@ public class main extends Activity {
 	    // 버튼 리스너 등록
 	    findViewById(R.id.btStart).setOnClickListener(mClickListener);
 	    findViewById(R.id.btStop).setOnClickListener(mClickListener);
-	    findViewById(R.id.btBind).setOnClickListener(mClickListener);
-	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
+	    findViewById(R.id.btSetting).setOnClickListener(mClickListener);
+//	    findViewById(R.id.btBind).setOnClickListener(mClickListener);
+//	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btExit).setOnClickListener(mClickListener);
 	    
 		// 스트림 읽기
 		try
-		{
-			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
+		{			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
+
 
 			EditText etInterval = (EditText)findViewById(R.id.etInterval);
-			etInterval.setText( prefs.getString("interval", "3") );
+			etInterval.setText( prefs.getString("interval", defaultInterval) );
 			
 			EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
-			etTimeInterval.setText( prefs.getString("time_interval", "200") );
+			etTimeInterval.setText( prefs.getString("time_interval", defaultTimeInterval) );
 			
 			CheckBox cbRestart = (CheckBox)findViewById(R.id.cbRestart);
 			cbRestart.setChecked(prefs.getBoolean("restart", false));
@@ -61,7 +62,7 @@ public class main extends Activity {
 		return true;
 	}
 	
-	public void doFinish()
+	public void save()
 	{
 		// 파일 저장
 		// 스트림 쓰기
@@ -100,16 +101,18 @@ public class main extends Activity {
 			{
 			case R.id.btStart:
 				{
-					EditText etInterval = (EditText)findViewById(R.id.etInterval);
+					save();
+
+/*					EditText etInterval = (EditText)findViewById(R.id.etInterval);
 					service_main._interval = Integer.parseInt(etInterval.getText().toString());
 					
 					EditText etTimeInterval = (EditText)findViewById(R.id.etTimeInterval);
 					service_main._timeInterval = Integer.parseInt(etTimeInterval.getText().toString());
 					
-					/*
+					*//*
 					CheckBox cbRestart = (CheckBox)findViewById(R.id.cbRestart);
 					service_main._restart = cbRestart.isChecked();
-					*/
+*/
 					
 					Intent bindIntent = new Intent(main.this, service_main.class);
 					startService(bindIntent);
@@ -122,10 +125,16 @@ public class main extends Activity {
 	                stopService(bindIntent);
 				}
 				break;
+
+			case R.id.btSetting:
+				{
+					startActivity(new Intent(main.this, Setting.class));
+				}
+				break;
 					
 			case R.id.btExit:
 				{
-					doFinish();
+					save();
 					finish();
 				}
 				break;

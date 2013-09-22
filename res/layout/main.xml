@@ -88,11 +88,10 @@
     	android:layout_margin="15dp">
         
 			<Button
-			    android:id="@+id/btBind"
+			    android:id="@+id/btSetting"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-			    android:text="@string/btBind"
-			    android:visibility="gone" />
+			    android:text="@string/btSetting"/>
 
 	</LinearLayout>
 	
