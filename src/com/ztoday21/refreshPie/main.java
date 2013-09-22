@@ -3,13 +3,11 @@ package com.ztoday21.refreshPie;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 
 
 public class main extends Activity {
@@ -33,7 +31,18 @@ public class main extends Activity {
 //	    findViewById(R.id.btBind).setOnClickListener(mClickListener);
 //	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btExit).setOnClickListener(mClickListener);
-	    
+
+		// version 표시
+		TextView tvVersion = (TextView)findViewById(R.id.textView_appTitle);
+		String appName = getResources().getString(R.string.app_name);
+		String versionName = null;
+		try {
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+		}
+		tvVersion.setText(appName + " " + versionName);
+
 		// 스트림 읽기
 		try
 		{			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
