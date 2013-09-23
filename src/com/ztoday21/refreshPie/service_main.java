@@ -15,10 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
+import android.os.*;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,7 +23,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class service_main extends Service implements OnTouchListener {
+public class service_main extends Service implements OnTouchListener{
 	
 	// 값 공유
 	public static int		_interval = 0;
@@ -38,7 +35,7 @@ public class service_main extends Service implements OnTouchListener {
 	public Intent		_refreshIntent = null;
 
 	SharedPreferences prefs;
-	private ArrayList<String> classNames;
+	private ArrayList<Setting.FrontActivityInfo> frontActivityInfos = new ArrayList<Setting.FrontActivityInfo>();
 
 	@SuppressLint("HandlerLeak")
 	public Handler _handler = new Handler() 
@@ -72,15 +69,24 @@ public class service_main extends Service implements OnTouchListener {
 
 			String frontActivityClassName =   componentInfo.getClassName();
 
-			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
+/*			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
 				String log =   "class : " + frontActivityClassName;
 //				Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
 				logToFile(log);
 			}
+*/
 
 			//최상단 화면 Classname 필터링
 			if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
-				if (classNames.indexOf(frontActivityClassName) == -1)
+				Boolean found = false;
+				for (Setting.FrontActivityInfo info : frontActivityInfos) {
+					if (info.getClassName().equals(frontActivityClassName)) {
+						found = true;
+						break;
+					}
+				}
+
+				if (!found)
 					return;
 			}
 
@@ -96,7 +102,7 @@ public class service_main extends Service implements OnTouchListener {
 				// 하지만 다른 어플은 구분 못함. 후훗
 				try
 				{
-					Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+					java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
 					process.getInputStream().close();
 				    process.getOutputStream().close();
 				    process.getErrorStream().close();
@@ -116,10 +122,18 @@ public class service_main extends Service implements OnTouchListener {
 		}	
 	};
 
+
+
 	@Override
 	public void onCreate() 
 	{
-        super.onCreate();
+
+		Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+		if ( !(handler instanceof CustomUncaughtExceptionHandler) ) {
+			Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler(this));
+		}
+
+		super.onCreate();
 
 		prefs = getSharedPreferences(main._saveName, MODE_PRIVATE);
 
@@ -163,7 +177,7 @@ public class service_main extends Service implements OnTouchListener {
 				// text view 를 window manager 에 등록 후 touch event 연결 
 				_tv = new TextView(this);
 				_tv.setOnTouchListener(this);
-				
+
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
 				            WindowManager.LayoutParams.WRAP_CONTENT,
 				            WindowManager.LayoutParams.WRAP_CONTENT,
@@ -188,8 +202,7 @@ public class service_main extends Service implements OnTouchListener {
 
 	@SuppressLint("NewApi")
 	private void loadSetting() {
-		Set<String> setClassNames = prefs.getStringSet(Setting.keyClassNames, new HashSet<String>());
-		classNames = new ArrayList<String>(setClassNames);
+		frontActivityInfos = Setting.getFrontActivityInfos(this);
 
 		_timeInterval = Integer.parseInt(prefs.getString("time_interval", main.defaultTimeInterval));
 		_interval = Integer.parseInt(prefs.getString("interval", main.defaultInterval));
@@ -206,9 +219,61 @@ public class service_main extends Service implements OnTouchListener {
 	//---------------------------------
 	public int _touchCnt;
 
+	long prevTouchTime = 0;
+
+	void onDoubleTap()
+	{
+
+		if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
+			ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+			// get the info from the currently running task
+			List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+
+			ComponentName componentInfo = taskInfo.get(0).topActivity;
+
+			String frontActivityClassName =   componentInfo.getClassName();
+			String frontActivityPackageName = componentInfo.getPackageName();
+
+
+			Boolean found = false;
+			for (Setting.FrontActivityInfo info : frontActivityInfos) {
+				if (info.getClassName().equals(frontActivityClassName)) {
+					found = true;
+					break;
+				}
+			}
+
+			if (found)
+				return;
+
+			String[] packageComponents =  frontActivityPackageName.split("\\.");
+
+			if (packageComponents.length > 0)
+				frontActivityPackageName = packageComponents[packageComponents.length-1];
+
+
+
+			frontActivityInfos.add(new Setting.FrontActivityInfo(frontActivityPackageName, frontActivityClassName));
+
+			Setting.setFrontActivityInfos(this, frontActivityInfos);
+
+			Toast.makeText(this, "refreshPie에 추가되었습니다", Toast.LENGTH_LONG).show();
+
+		}
+	}
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
 	{
+
+		if (event.getEventTime() - prevTouchTime < 300) {
+			onDoubleTap();
+		}
+
+		prevTouchTime = event.getEventTime();
+
+
 		{
 			_touchCnt++;
 			
@@ -223,6 +288,11 @@ public class service_main extends Service implements OnTouchListener {
 		
 		return false;
 	}
+
+
+
+
+
 
 	@Override
 	public IBinder onBind(Intent intent) {

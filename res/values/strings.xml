@@ -18,6 +18,6 @@
 	<string name="delete">삭제</string>
 	<string name="autostart">자동실행</string>
 	<string name="EnableAppFilter">등록된 화면(Activity)에서만 실행</string>
-	<string name="close">닫기</string><string name="logFrontActivityClassname">활성화면 클래스이름 저장 (/sdcard/frontactivity.txt)</string><string name="save">저장</string>
+	<string name="close">닫기</string><string name="logFrontActivityClassname">현재 화면 클래스이름 등록(원하는 화면에서 더블탭)</string><string name="save">저장</string>
 	
 </resources>

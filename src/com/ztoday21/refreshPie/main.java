@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.*;
 
 
@@ -20,7 +21,13 @@ public class main extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
-	    super.onCreate(savedInstanceState);
+
+		Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+		if ( !(handler instanceof CustomUncaughtExceptionHandler) ) {
+			Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler(this));
+		}
+
+		super.onCreate(savedInstanceState);
 	
 	    setContentView(R.layout.main);
 	    
@@ -39,7 +46,8 @@ public class main extends Activity {
 		try {
 			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+			e.printStackTrace();
 		}
 		tvVersion.setText(appName + " " + versionName);
 

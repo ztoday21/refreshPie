@@ -41,7 +41,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center">
-
+<!--
 			<EditText
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -56,9 +56,9 @@
 					android:text="@string/add"
 					android:id="@+id/buttonAddClassname"
 					android:layout_gravity="center"/>
-
+-->
 			<Button
-					android:layout_width="wrap_content"
+					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/delete"
 					android:id="@+id/buttonDeleteClassname"
