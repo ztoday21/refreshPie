@@ -36,27 +36,33 @@
 				android:id="@+id/checkBoxEnableActivityFilter"
 				android:longClickable="false"/>
 
-		<LinearLayout
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center">
-<!--
-			<EditText
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:id="@+id/etClassname"
-					android:layout_gravity="center"
-					android:layout_weight="1"
-					android:hint="@string/classname"/>
+		<View
+				android:layout_width="fill_parent"
+				android:layout_height="1dp"
+				android:background="@android:color/black"/>
 
-			<Button
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/add"
-					android:id="@+id/buttonAddClassname"
-					android:layout_gravity="center"/>
--->
+		<!--
+				<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center">
+
+					<EditText
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:id="@+id/etClassname"
+							android:layout_gravity="center"
+							android:layout_weight="1"
+							android:hint="@string/classname"/>
+
+					<Button
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/add"
+							android:id="@+id/buttonAddClassname"
+							android:layout_gravity="center"/>
+
 			<Button
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
@@ -64,6 +70,8 @@
 					android:id="@+id/buttonDeleteClassname"
 					android:layout_gravity="center"/>
 		</LinearLayout>
+		-->
+
 		<ListView
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"

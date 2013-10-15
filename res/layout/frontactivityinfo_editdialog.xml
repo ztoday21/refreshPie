@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/fainfoedit_classname"
+				android:id="@+id/textView"
+				android:layout_gravity="center_vertical"
+				android:gravity="center_vertical"/>
+
+		<EditText
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/editTextClassName"
+				android:layout_gravity="center"/>
+	</LinearLayout>
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/fainfoedit_delaytime"
+				android:id="@+id/textView"
+				android:layout_gravity="center_vertical"
+				android:gravity="center_vertical"/>
+
+		<EditText
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/editTextDelayTime"
+				android:layout_gravity="center"
+				android:password="false"/>
+	</LinearLayout>
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center">
+
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:text="@string/update"
+				android:id="@+id/buttonUpdate"
+				android:layout_weight="1"/>
+
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:text="@string/delete"
+				android:id="@+id/buttonDelete"
+				android:layout_weight="1"/>
+
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:text="@string/close"
+				android:id="@+id/buttonClose"
+				android:layout_weight="1"/>
+	</LinearLayout>
+</LinearLayout>

@@ -17,7 +17,11 @@
 	<string name="add">추가</string>
 	<string name="delete">삭제</string>
 	<string name="autostart">자동실행</string>
-	<string name="EnableAppFilter">등록된 화면(Activity)에서만 실행</string>
-	<string name="close">닫기</string><string name="logFrontActivityClassname">현재 화면 클래스이름 등록(원하는 화면에서 더블탭)</string><string name="save">저장</string>
+	<string name="EnableAppFilter">등록된 화면(Activity)에서만 Refresh</string>
+	<string name="close">닫기</string><string name="logFrontActivityClassname">화면등록모드 (원하는 화면에서 더블탭)</string>
+	<string name="save">저장</string>
+	<string name="fainfoedit_classname">클래스명</string>
+	<string name="fainfoedit_delaytime">지연시간</string><string name="update">수정</string>
+
 	
 </resources>

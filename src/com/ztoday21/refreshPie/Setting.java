@@ -2,6 +2,7 @@ package com.ztoday21.refreshPie;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,12 +25,12 @@ import java.util.Set;
  * Date: 13. 9. 21
  * Time: 오후 9:52
  */
-public class Setting extends Activity {
+public class Setting extends Activity implements DialogInterface.OnDismissListener {
 	public static final String keyAutostart = "Autostart";
 	public static final String keyActivityFilter = "ActivityFilter";
 	public static final String keyLogFrontActivityClassname = "LogFrontActivityClassname";
 	public static final String keyFrontActivityInfos = "frontActivityInfos";
-	public static final String keyInitialized = "keyInitialized_v116";
+	public static final String keyInitialized = "keyInitialized_v117";
 
 	private ListView lvActiveActivityClassnames;
 	private CheckBox cbAutostart;
@@ -42,12 +43,20 @@ public class Setting extends Activity {
 
 	public void onCreate(Bundle savedInstanceState)
 	{
+
+		Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+		if ( !(handler instanceof CustomUncaughtExceptionHandler) ) {
+			Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler(this));
+		}
+
+
+
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.setting);
 
 //		findViewById(R.id.buttonAddClassname).setOnClickListener(mClickListener);
-		findViewById(R.id.buttonDeleteClassname).setOnClickListener(mClickListener);
+//		findViewById(R.id.buttonDeleteClassname).setOnClickListener(mClickListener);
 		findViewById(R.id.buttonClose).setOnClickListener(mClickListener);
 
 		lvActiveActivityClassnames = (ListView) findViewById(R.id.listViewClassnames);
@@ -71,6 +80,8 @@ public class Setting extends Activity {
 		lvActiveActivityClassnames.setAdapter(adapter);
 
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+		lvActiveActivityClassnames.setOnItemClickListener(mListClickListener);
 
 
 	}
@@ -128,7 +139,9 @@ public class Setting extends Activity {
 					tt.setText(p.getPackageName());
 				}
 				if(bt != null){
-					bt.setText(p.getClassName());
+					String text = "클래스명 : " + p.getClassName() + "\n" +
+							"지연시간 : " + String.valueOf(p.getRefreshDelaytime());
+					bt.setText(text);
 				}
 			}
 			return v;
@@ -138,10 +151,12 @@ public class Setting extends Activity {
 
 		private String packageName;
 		private String className;
+		private int refreshDelaytime;
 
-		public FrontActivityInfo(String _packageName, String _className){
+		public FrontActivityInfo(String _packageName, String _className, int _refreshDelaytime){
 			this.packageName = _packageName;
 			this.className = _className;
+			this.refreshDelaytime = _refreshDelaytime;
 		}
 
 		public String getPackageName() {
@@ -152,15 +167,19 @@ public class Setting extends Activity {
 			return className;
 		}
 
+		public int getRefreshDelaytime() {
+			return refreshDelaytime;
+		}
+
 	}
 
 	private void loadDefaults()
 	{
 		frontActivityInfos = new ArrayList<FrontActivityInfo>(Arrays.asList(
-				new FrontActivityInfo("리디북스", "com.initialcoms.ridi.epub.EPubReaderActivityPhone"),
-				new FrontActivityInfo("교보 eBook", "com.kyobo.ebook.common.b2c.viewer.epub.activity.ViewerEpubMainActivity"),
-				new FrontActivityInfo("교보 도서관 (type3)", "com.feelingk.epub.reader.EPubViewer"),
-				new FrontActivityInfo("교보 도서관 (type1 phone)", "com.kyobobook.b2b.phone.reader.WebViewer")
+				new FrontActivityInfo("리디북스", "com.initialcoms.ridi.epub.EPubReaderActivityPhone", 950),
+				new FrontActivityInfo("교보 eBook", "com.kyobo.ebook.common.b2c.viewer.epub.activity.ViewerEpubMainActivity", 900),
+				new FrontActivityInfo("교보 도서관 (type3)", "com.feelingk.epub.reader.EPubViewer", 900),
+				new FrontActivityInfo("교보 도서관 (type1 phone)", "com.kyobobook.b2b.phone.reader.WebViewer", 900)
 		));
 	}
 
@@ -179,6 +198,36 @@ public class Setting extends Activity {
 		ed.putBoolean(keyInitialized, true);
 
 		ed.commit();
+	}
+
+	AdapterView.OnItemClickListener mListClickListener = new AdapterView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+			FrontActivityInfoEditDlg dlg = new FrontActivityInfoEditDlg(Setting.this);
+			dlg.frontActivityInfo = frontActivityInfos.get(position);
+			dlg.listIndex = position;
+			dlg.setOnDismissListener(Setting.this);
+
+			dlg.show();
+
+		}
+	};
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		FrontActivityInfoEditDlg dlg = (FrontActivityInfoEditDlg) dialog;
+
+		if (dlg.deleted) {
+			frontActivityInfos.remove(dlg.listIndex);
+			lvActiveActivityClassnames.clearChoices();
+
+		}
+		else {
+			frontActivityInfos.set(dlg.listIndex, dlg.frontActivityInfo);
+		}
+
+		adapter.notifyDataSetChanged();
 	}
 
 	private Button.OnClickListener mClickListener = new View.OnClickListener()
@@ -200,7 +249,7 @@ public class Setting extends Activity {
 					}
 				}
 				break;
-*/
+
 
 				case R.id.buttonDeleteClassname: {
 					int pos = lvActiveActivityClassnames.getCheckedItemPosition();
@@ -211,6 +260,7 @@ public class Setting extends Activity {
 					}
 				}
 				break;
+*/
 
 				case R.id.buttonClose:
 				{

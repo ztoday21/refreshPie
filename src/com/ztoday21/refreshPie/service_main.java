@@ -60,35 +60,6 @@ public class service_main extends Service implements OnTouchListener{
 		public void handleMessage(Message msg)
 		{
 
-			ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-
-			// get the info from the currently running task
-			List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
-
-			ComponentName componentInfo = taskInfo.get(0).topActivity;
-
-			String frontActivityClassName =   componentInfo.getClassName();
-
-/*			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
-				String log =   "class : " + frontActivityClassName;
-//				Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
-				logToFile(log);
-			}
-*/
-
-			//최상단 화면 Classname 필터링
-			if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
-				Boolean found = false;
-				for (Setting.FrontActivityInfo info : frontActivityInfos) {
-					if (info.getClassName().equals(frontActivityClassName)) {
-						found = true;
-						break;
-					}
-				}
-
-				if (!found)
-					return;
-			}
 
 
 			// 리프레시 어플 실행
@@ -143,7 +114,7 @@ public class service_main extends Service implements OnTouchListener{
     public void onDestroy() 
     {
         super.onDestroy();
-        Toast.makeText(this, "서비스 중지됨", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "refreshPie 서비스 중지됨", Toast.LENGTH_SHORT).show();
         _isRunning = false;
         
         // window manager 에서 view 제거
@@ -192,7 +163,7 @@ public class service_main extends Service implements OnTouchListener{
 
 				loadSetting();
 
-				Toast.makeText(this, "서비스 시작됨", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "refreshPie 서비스 시작됨", Toast.LENGTH_SHORT).show();
 				_isRunning = true;
 			}
 		}
@@ -254,7 +225,8 @@ public class service_main extends Service implements OnTouchListener{
 
 
 
-			frontActivityInfos.add(new Setting.FrontActivityInfo(frontActivityPackageName, frontActivityClassName));
+			frontActivityInfos.add(new Setting.FrontActivityInfo(frontActivityPackageName,
+					frontActivityClassName, Integer.parseInt( prefs.getString("time_interval", main.defaultTimeInterval))));
 
 			Setting.setFrontActivityInfos(this, frontActivityInfos);
 
@@ -281,8 +253,45 @@ public class service_main extends Service implements OnTouchListener{
 			{
 				// 터치 초기화
 				_touchCnt = 0;
-				
-				_handler.sendEmptyMessageDelayed(0, service_main._timeInterval);
+
+
+				//화면 클래스 필터링
+				ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+				// get the info from the currently running task
+				List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+
+				ComponentName componentInfo = taskInfo.get(0).topActivity;
+
+				String frontActivityClassName =   componentInfo.getClassName();
+
+/*			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
+				String log =   "class : " + frontActivityClassName;
+//				Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
+				logToFile(log);
+			}
+*/
+
+				int delayTime = service_main._timeInterval;
+				//최상단 화면 Classname 필터링
+				if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
+					Setting.FrontActivityInfo infoFound = null;
+					for (Setting.FrontActivityInfo info : frontActivityInfos) {
+						if (info.getClassName().equals(frontActivityClassName)) {
+							infoFound = info;
+							break;
+						}
+					}
+
+					if (infoFound != null)
+						delayTime = infoFound.getRefreshDelaytime();
+					else
+						return false;
+				}
+
+
+
+				_handler.sendEmptyMessageDelayed(0, delayTime);
 			}
 		}
 		
