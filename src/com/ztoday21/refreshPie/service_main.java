@@ -259,11 +259,17 @@ public class service_main extends Service implements OnTouchListener{
 				ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 
 				// get the info from the currently running task
-				List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+				List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(2);
 
 				ComponentName componentInfo = taskInfo.get(0).topActivity;
 
 				String frontActivityClassName =   componentInfo.getClassName();
+
+				if (frontActivityClassName.contains("com.melon.wizard")) { //KeyFlip과 같이 사용하는 경우 이전 Activity가 topmost
+					componentInfo = taskInfo.get(1).topActivity;
+					frontActivityClassName =   componentInfo.getClassName();
+				}
+
 
 /*			if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
 				String log =   "class : " + frontActivityClassName;
@@ -271,6 +277,8 @@ public class service_main extends Service implements OnTouchListener{
 				logToFile(log);
 			}
 */
+
+//				Toast.makeText(this, frontActivityClassName, Toast.LENGTH_SHORT).show();
 
 				int delayTime = service_main._timeInterval;
 				//최상단 화면 Classname 필터링
