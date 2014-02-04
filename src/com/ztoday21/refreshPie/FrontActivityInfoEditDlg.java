@@ -10,7 +10,7 @@ import android.widget.TextView;
 /**
  * User: hermit
  * Date: 13. 10. 15
- * Time: ¿ÀÈÄ 3:17
+ * Time: ì˜¤í›„ 3:17
  */
 public class FrontActivityInfoEditDlg extends Dialog implements View.OnClickListener{
 

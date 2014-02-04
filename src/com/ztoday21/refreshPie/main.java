@@ -31,7 +31,7 @@ public class main extends Activity {
 	
 	    setContentView(R.layout.main);
 	    
-	    // ¹öÆ° ¸®½º³Ê µî·Ï
+	    // ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 	    findViewById(R.id.btStart).setOnClickListener(mClickListener);
 	    findViewById(R.id.btStop).setOnClickListener(mClickListener);
 	    findViewById(R.id.btSetting).setOnClickListener(mClickListener);
@@ -39,7 +39,7 @@ public class main extends Activity {
 //	    findViewById(R.id.btUnbind).setOnClickListener(mClickListener);
 	    findViewById(R.id.btExit).setOnClickListener(mClickListener);
 
-		// version Ç¥½Ã
+		// version í‘œì‹œ
 		TextView tvVersion = (TextView)findViewById(R.id.textView_appTitle);
 		String appName = getResources().getString(R.string.app_name);
 		String versionName = null;
@@ -51,7 +51,7 @@ public class main extends Activity {
 		}
 		tvVersion.setText(appName + " " + versionName);
 
-		// ½ºÆ®¸² ÀĞ±â
+		// ìŠ¤íŠ¸ë¦¼ ì½ê¸°
 		try
 		{			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
 
@@ -72,7 +72,7 @@ public class main extends Activity {
 
 	}
 	
-	//--------------------- Å° ÀÌº¥Æ® Ã³¸®
+	//--------------------- í‚¤ ì´ë²¤íŠ¸ ì²˜ë¦¬
 	@Override
 	public boolean onKeyDown( int keyCode, KeyEvent event )
 	{
@@ -81,8 +81,8 @@ public class main extends Activity {
 	
 	public void save()
 	{
-		// ÆÄÀÏ ÀúÀå
-		// ½ºÆ®¸² ¾²±â
+		// íŒŒì¼ ì €ì¥
+		// ìŠ¤íŠ¸ë¦¼ ì“°ê¸°
 		try
 		{
 			SharedPreferences prefs = getSharedPreferences(_saveName, MODE_PRIVATE);
@@ -109,7 +109,7 @@ public class main extends Activity {
 	}
 
 	//--------------------------------------------------------------------------------------
-	// ¹öÆ° ÀÌº¥Æ® Ã³¸®
+	// ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
 	private Button.OnClickListener mClickListener = new View.OnClickListener()
 	{
 		public void onClick(View v)
