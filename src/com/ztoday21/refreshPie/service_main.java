@@ -71,26 +71,35 @@ public class service_main extends Service implements OnTouchListener{
 			{
 				// 크레마 샤인 1.2.10 버전은 여기로 들어온다.
 				// 하지만 다른 어플은 구분 못함. 후훗
-				try
-				{
-					java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
-					process.getInputStream().close();
-				    process.getOutputStream().close();
-				    process.getErrorStream().close();
-				    process.waitFor();
-				}
-				catch(IOException e)
-				{
-					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-				}
-				catch( InterruptedException e )
-				{
-					Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
-					e.printStackTrace();
+				try {
+					refresh1();
+				} catch(Exception e) {
+					refresh2();
 				}
 			}
-		}	
+		}
+
+		private void refresh1() {
+			com.eink.epdc.Main epdcMain = new com.eink.epdc.Main();
+			epdcMain.FullRefresh2();
+		}
+
+		private void refresh2() {
+			try {
+				java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+				process.getInputStream().close();
+				process.getOutputStream().close();
+				process.getErrorStream().close();
+				process.waitFor();
+			} catch (IOException e) {
+				Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				Toast.makeText(service_main.this, e.toString(), Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}
+
 	};
 
 
