@@ -10,7 +10,7 @@ import java.io.RandomAccessFile;
 /**
  * User: hermit
  * Date: 13. 9. 23
- * Time: ¿ÀÈÄ 6:37
+ * Time: ì˜¤í›„ 6:37
  */
 public class CustomUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private Context mContext;

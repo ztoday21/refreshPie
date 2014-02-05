@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * User: hermit
  * Date: 13. 9. 21
- * Time: ¿ÀÈÄ 9:52
+ * Time: ì˜¤í›„ 9:52
  */
 public class Setting extends Activity implements DialogInterface.OnDismissListener {
 	public static final String keyAutostart = "Autostart";
@@ -139,8 +139,8 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 					tt.setText(p.getPackageName());
 				}
 				if(bt != null){
-					String text = "Å¬·¡½º¸í : " + p.getClassName() + "\n" +
-							"Áö¿¬½Ã°£ : " + String.valueOf(p.getRefreshDelaytime());
+					String text = "í´ë˜ìŠ¤ëª… : " + p.getClassName() + "\n" +
+							"ì§€ì—°ì‹œê°„ : " + String.valueOf(p.getRefreshDelaytime());
 					bt.setText(text);
 				}
 			}
@@ -176,10 +176,10 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 	private void loadDefaults()
 	{
 		frontActivityInfos = new ArrayList<FrontActivityInfo>(Arrays.asList(
-				new FrontActivityInfo("¸®µğºÏ½º", "com.initialcoms.ridi.epub.EPubReaderActivityPhone", 950),
-				new FrontActivityInfo("±³º¸ eBook", "com.kyobo.ebook.common.b2c.viewer.epub.activity.ViewerEpubMainActivity", 900),
-				new FrontActivityInfo("±³º¸ µµ¼­°ü (type3)", "com.feelingk.epub.reader.EPubViewer", 900),
-				new FrontActivityInfo("±³º¸ µµ¼­°ü (type1 phone)", "com.kyobobook.b2b.phone.reader.WebViewer", 900)
+				new FrontActivityInfo("ë¦¬ë””ë¶ìŠ¤", "com.initialcoms.ridi.epub.EPubReaderActivityPhone", 950),
+				new FrontActivityInfo("êµë³´ eBook", "com.kyobo.ebook.common.b2c.viewer.epub.activity.ViewerEpubMainActivity", 900),
+				new FrontActivityInfo("êµë³´ ë„ì„œê´€ (type3)", "com.feelingk.epub.reader.EPubViewer", 900),
+				new FrontActivityInfo("êµë³´ ë„ì„œê´€ (type1 phone)", "com.kyobobook.b2b.phone.reader.WebViewer", 900)
 		));
 	}
 

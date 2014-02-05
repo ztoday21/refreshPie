@@ -25,12 +25,12 @@ import android.widget.Toast;
 
 public class service_main extends Service implements OnTouchListener{
 	
-	// °ª °øÀ¯
+	// ê°’ ê³µìœ 
 	public static int		_interval = 0;
 	public static int		_timeInterval = 0;
 	public static boolean	_isRunning = false;
 	
-	// ³»ºÎ »ç¿ë
+	// ë‚´ë¶€ ì‚¬ìš©
 	public TextView		_tv = null;		
 	public Intent		_refreshIntent = null;
 
@@ -62,15 +62,15 @@ public class service_main extends Service implements OnTouchListener{
 
 
 
-			// ¸®ÇÁ·¹½Ã ¾îÇÃ ½ÇÇà
+			// ë¦¬í”„ë ˆì‹œ ì–´í”Œ ì‹¤í–‰
 			if(null != _refreshIntent)
 			{
 				startActivity(_refreshIntent);
 			}
 			else
 			{
-				// Å©·¹¸¶ »şÀÎ 1.2.10 ¹öÀüÀº ¿©±â·Î µé¾î¿Â´Ù.
-				// ÇÏÁö¸¸ ´Ù¸¥ ¾îÇÃÀº ±¸ºĞ ¸øÇÔ. ÈÄÈÊ
+				// í¬ë ˆë§ˆ ìƒ¤ì¸ 1.2.10 ë²„ì „ì€ ì—¬ê¸°ë¡œ ë“¤ì–´ì˜¨ë‹¤.
+				// í•˜ì§€ë§Œ ë‹¤ë¥¸ ì–´í”Œì€ êµ¬ë¶„ ëª»í•¨. í›„í›—
 				try {
 					refresh1();
 				} catch(Exception e) {
@@ -123,15 +123,15 @@ public class service_main extends Service implements OnTouchListener{
     public void onDestroy() 
     {
         super.onDestroy();
-        Toast.makeText(this, "refreshPie ¼­ºñ½º ÁßÁöµÊ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "refreshPie ì„œë¹„ìŠ¤ ì¤‘ì§€ë¨", Toast.LENGTH_SHORT).show();
         _isRunning = false;
         
-        // window manager ¿¡¼­ view Á¦°Å
-        // ¼­ºñ½º°¡ ¸ØÃçµµ ÀÌºÎºĞÀÌ Á¦°Å°¡ ¾ÈµÇ¾úÀ½
+        // window manager ì—ì„œ view ì œê±°
+        // ì„œë¹„ìŠ¤ê°€ ë©ˆì¶°ë„ ì´ë¶€ë¶„ì´ ì œê±°ê°€ ì•ˆë˜ì—ˆìŒ
         WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         winmgr.removeView(_tv);
         
-        // ÈÄ¿¡ Á» ´õ Á¤È®ÇÑ ¼­ºñ½º ±â´É ¾Ë¾Æ¾ß ÇÔ
+        // í›„ì— ì¢€ ë” ì •í™•í•œ ì„œë¹„ìŠ¤ ê¸°ëŠ¥ ì•Œì•„ì•¼ í•¨
         
     }
     
@@ -140,21 +140,21 @@ public class service_main extends Service implements OnTouchListener{
 	{
 		if( 0 != (Service.START_FLAG_RETRY & flags) )
 		{
-			// ¿øÇÏ´Â ÀÛ¾÷À» ÇÏÀÚ
-			// ¸®ÇÁ·¹½Ã¾îÇÃ Ã£±â
+			// ì›í•˜ëŠ” ì‘ì—…ì„ í•˜ì
+			// ë¦¬í”„ë ˆì‹œì–´í”Œ ì°¾ê¸°
 			
-			// Å©·¹¸¶ ÅÍÄ¡
+			// í¬ë ˆë§ˆ í„°ì¹˜
 			_refreshIntent = getPackageManager().getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
 
-			// Å©·¹¸¶ »şÀÎ -- ÀÌ¹ø ¹öÀü ºÎÅÍ´Â »ç¿ë ¾ÈÇÔ
+			// í¬ë ˆë§ˆ ìƒ¤ì¸ -- ì´ë²ˆ ë²„ì „ ë¶€í„°ëŠ” ì‚¬ìš© ì•ˆí•¨
 			
 			if(true == _isRunning)
 			{
-				Toast.makeText(this, "ÀÌ¹Ì ¼­ºñ½º°¡ ½ÇÇàÁßÀÔ´Ï´Ù.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "ì´ë¯¸ ì„œë¹„ìŠ¤ê°€ ì‹¤í–‰ì¤‘ì…ë‹ˆë‹¤.", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				// text view ¸¦ window manager ¿¡ µî·Ï ÈÄ touch event ¿¬°á 
+				// text view ë¥¼ window manager ì— ë“±ë¡ í›„ touch event ì—°ê²° 
 				_tv = new TextView(this);
 				_tv.setOnTouchListener(this);
 
@@ -172,7 +172,7 @@ public class service_main extends Service implements OnTouchListener{
 
 				loadSetting();
 
-				Toast.makeText(this, "refreshPie ¼­ºñ½º ½ÃÀÛµÊ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "refreshPie ì„œë¹„ìŠ¤ ì‹œì‘ë¨", Toast.LENGTH_SHORT).show();
 				_isRunning = true;
 			}
 		}
@@ -239,7 +239,7 @@ public class service_main extends Service implements OnTouchListener{
 
 			Setting.setFrontActivityInfos(this, frontActivityInfos);
 
-			Toast.makeText(this, "refreshPie¿¡ Ãß°¡µÇ¾ú½À´Ï´Ù", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "refreshPieì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤", Toast.LENGTH_LONG).show();
 
 		}
 	}
@@ -260,11 +260,11 @@ public class service_main extends Service implements OnTouchListener{
 			
 			if( service_main._interval <= _touchCnt )
 			{
-				// ÅÍÄ¡ ÃÊ±âÈ­
+				// í„°ì¹˜ ì´ˆê¸°í™”
 				_touchCnt = 0;
 
 
-				//È­¸é Å¬·¡½º ÇÊÅÍ¸µ
+				//í™”ë©´ í´ë˜ìŠ¤ í•„í„°ë§
 				ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 
 				// get the info from the currently running task
@@ -274,7 +274,7 @@ public class service_main extends Service implements OnTouchListener{
 
 				String frontActivityClassName =   componentInfo.getClassName();
 
-				if (frontActivityClassName.contains("com.melon.wizard")) { //KeyFlip°ú °°ÀÌ »ç¿ëÇÏ´Â °æ¿ì ÀÌÀü Activity°¡ topmost
+				if (frontActivityClassName.contains("com.melon.wizard")) { //KeyFlipê³¼ ê°™ì´ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ì´ì „ Activityê°€ topmost
 					componentInfo = taskInfo.get(1).topActivity;
 					frontActivityClassName =   componentInfo.getClassName();
 				}
@@ -290,7 +290,7 @@ public class service_main extends Service implements OnTouchListener{
 //				Toast.makeText(this, frontActivityClassName, Toast.LENGTH_SHORT).show();
 
 				int delayTime = service_main._timeInterval;
-				//ÃÖ»ó´Ü È­¸é Classname ÇÊÅÍ¸µ
+				//ìµœìƒë‹¨ í™”ë©´ Classname í•„í„°ë§
 				if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
 					Setting.FrontActivityInfo infoFound = null;
 					for (Setting.FrontActivityInfo info : frontActivityInfos) {
