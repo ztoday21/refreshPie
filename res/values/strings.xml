@@ -12,7 +12,7 @@
 	<string name="etTimeInterval">200</string>
 	<string name="timeIntervalTitle">Input Delay Time\ninput ms(1 second is 1000 ms)</string>
 	<string name="cbRestart">restart</string>
-	<string name="app_title">refreshPie 1.1.5</string>
+	<string name="app_title">refreshPie 1.1.9</string>
 	<string name="classname">화면 클래스명</string>
 	<string name="add">추가</string>
 	<string name="delete">삭제</string>
