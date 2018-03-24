@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-/**
- * User: hermit
- * Date: 13. 9. 22
- * Time: ¿ÀÀü 12:57
- */
 public class refreshPieServiceReceiver extends BroadcastReceiver {
 	@SuppressWarnings("static-access")
 	@Override

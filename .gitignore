@@ -19,3 +19,7 @@ local.properties
 .classpath
 .project
 .metadata
+.idea/*
+build
+.gradle
+app/build
