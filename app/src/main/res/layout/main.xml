@@ -57,23 +57,23 @@
 
     </LinearLayout>
 
-    <LinearLayout 
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:layout_margin="15dp">
-        
+
 			<Button
         		android:id="@+id/btStart"
         		android:layout_width="fill_parent"
         		android:layout_height="wrap_content"
         		android:text="@string/btStart" />
     </LinearLayout>
-    
-	<LinearLayout 
+
+	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:layout_margin="15dp">
-        
+
 			<Button
 			    android:id="@+id/btStop"
 			    android:layout_width="fill_parent"
@@ -81,12 +81,12 @@
 			    android:text="@string/btStop" />
 
 	</LinearLayout>
-	
-	<LinearLayout 
+
+	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:layout_margin="15dp">
-        
+
 			<Button
 			    android:id="@+id/btSetting"
 			    android:layout_width="fill_parent"
@@ -94,12 +94,12 @@
 			    android:text="@string/btSetting"/>
 
 	</LinearLayout>
-	
-	<LinearLayout 
+
+	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:layout_margin="15dp">
-        
+
 			<Button
 			    android:id="@+id/btUnbind"
 			    android:layout_width="fill_parent"
@@ -108,8 +108,8 @@
 			    android:visibility="gone" />
 
 	</LinearLayout>
-	
-	<LinearLayout 
+
+	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:layout_margin="15dp">

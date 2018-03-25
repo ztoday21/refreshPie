@@ -76,7 +76,7 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 		if (prefs.getBoolean(keyInitialized, false) == false)
 			loadDefaults();
 
-		adapter = new FrontActivityInfoAdapter(this,  R.layout.row, frontActivityInfos);
+		adapter = new FrontActivityInfoAdapter(this, R.layout.row, frontActivityInfos);
 		lvActiveActivityClassnames.setAdapter(adapter);
 
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -90,7 +90,7 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 		SharedPreferences prefs = ctx.getSharedPreferences(main._saveName, MODE_PRIVATE);
 
 
-		String json =  prefs.getString(keyFrontActivityInfos, null);
+		String json = prefs.getString(keyFrontActivityInfos, null);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();

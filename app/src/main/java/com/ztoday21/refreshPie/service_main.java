@@ -24,10 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 enum RefreshMethod {
-    UNKNOWN,
-    USE_INTENT,
-    USE_EPDBLK,
-    USE_JNIEPDC,
+	UNKNOWN,
+	USE_INTENT,
+	USE_EPDBLK,
+	USE_JNIEPDC,
 }
 
 public class service_main extends Service implements OnTouchListener{
@@ -45,8 +45,8 @@ public class service_main extends Service implements OnTouchListener{
 	public TextView		tv = null;
 	public Intent		refreshIntent = null;
 
-    private com.eink.epdc.Main epdc;
-    private RefreshMethod method = RefreshMethod.UNKNOWN;
+	private com.eink.epdc.Main epdc;
+	private RefreshMethod method = RefreshMethod.UNKNOWN;
 
 	SharedPreferences prefs;
 	private ArrayList<Setting.FrontActivityInfo> frontActivityInfos = new ArrayList<Setting.FrontActivityInfo>();
@@ -73,31 +73,31 @@ public class service_main extends Service implements OnTouchListener{
 
 		public void handleMessage(Message msg)
 		{
-            switch (method) {
-                case USE_INTENT:
-                    startActivity(refreshIntent);
-                    return;
-                case USE_JNIEPDC:
-                    try {
-                        epdc.FullRefresh2();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                case USE_EPDBLK:
-                    try {
-                        java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
-                        process.getInputStream().close();
-                        process.getOutputStream().close();
-                        process.getErrorStream().close();
-                        process.waitFor();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                default:
-                    Log.i(LOG_TAG, "unsupport refresh method: " + method);
-            }
+			switch (method) {
+				case USE_INTENT:
+					startActivity(refreshIntent);
+					return;
+				case USE_JNIEPDC:
+					try {
+						epdc.FullRefresh2();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return;
+				case USE_EPDBLK:
+					try {
+						java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+						process.getInputStream().close();
+						process.getOutputStream().close();
+						process.getErrorStream().close();
+						process.waitFor();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return;
+				default:
+					Log.i(LOG_TAG, "unsupport refresh method: " + method);
+			}
 		}
 	};
 
@@ -114,17 +114,17 @@ public class service_main extends Service implements OnTouchListener{
 
 		prefs = getSharedPreferences(main._saveName, MODE_PRIVATE);
 
-    }
+	}
 
 	@Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        Toast.makeText(this, "Stopped refreshPie service.", Toast.LENGTH_SHORT).show();
-        isRunning = false;
+	public void onDestroy()
+	{
+		super.onDestroy();
+		Toast.makeText(this, "Stopped refreshPie service.", Toast.LENGTH_SHORT).show();
+		isRunning = false;
 
-        uninstallTouchHandler();
-    }
+		uninstallTouchHandler();
+	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId )
@@ -146,67 +146,67 @@ public class service_main extends Service implements OnTouchListener{
 		return Service.START_STICKY;
 	}
 
-    private void installTouchHandler() {
-	    if (tv != null) {
-	        return;
-        }
+	private void installTouchHandler() {
+		if (tv != null) {
+			return;
+		}
 
-        tv = new TextView(this);
-        tv.setOnTouchListener(this);
+		tv = new TextView(this);
+		tv.setOnTouchListener(this);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+				WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+				| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+				PixelFormat.TRANSLUCENT);
 
-        WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+		WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-        winmgr.addView(tv, lp);
-    }
+		winmgr.addView(tv, lp);
+	}
 
-    private void uninstallTouchHandler() {
-        if (tv == null) {
-            return;
-        }
-        // FIXME: is this right way?
-        // remove view from window manager
-        WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-        winmgr.removeView(tv);
-        tv = null;
-    }
+	private void uninstallTouchHandler() {
+		if (tv == null) {
+			return;
+		}
+		// FIXME: is this right way?
+		// remove view from window manager
+		WindowManager winmgr = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+		winmgr.removeView(tv);
+		tv = null;
+	}
 
-    private RefreshMethod findRefreshMethod() {
-        // TODO: find refresh app
-        if (method != RefreshMethod.UNKNOWN) {
-            return method;
-        }
+	private RefreshMethod findRefreshMethod() {
+		// TODO: find refresh app
+		if (method != RefreshMethod.UNKNOWN) {
+			return method;
+		}
 
-        // TODO intent list
-        try {
-            refreshIntent = getPackageManager().getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
-        } catch (Exception e) {
-        }
-        if (refreshIntent != null) {
-            method = RefreshMethod.USE_INTENT;
-            return method;
-        }
+		// TODO intent list
+		try {
+			refreshIntent = getPackageManager().getLaunchIntentForPackage("com.nextpapyrus.Refresh2");
+		} catch (Exception e) {
+		}
+		if (refreshIntent != null) {
+			method = RefreshMethod.USE_INTENT;
+			return method;
+		}
 
-        try {
-            epdc = new com.eink.epdc.Main();
-            method = RefreshMethod.USE_JNIEPDC;
-            return method;
-        } catch (UnsatisfiedLinkError e) {
-        }
+		try {
+			epdc = new com.eink.epdc.Main();
+			method = RefreshMethod.USE_JNIEPDC;
+			return method;
+		} catch (UnsatisfiedLinkError e) {
+		}
 
-        if (new File("/system/bin/epdblk").exists()) {
-            method = RefreshMethod.USE_EPDBLK;
-            return method;
-        }
-        return RefreshMethod.UNKNOWN;
-    }
+		if (new File("/system/bin/epdblk").exists()) {
+			method = RefreshMethod.USE_EPDBLK;
+			return method;
+		}
+		return RefreshMethod.UNKNOWN;
+	}
 
 	@SuppressLint("NewApi")
 	private void loadSetting() {
@@ -234,7 +234,7 @@ public class service_main extends Service implements OnTouchListener{
 
 			ComponentName componentInfo = taskInfo.get(0).topActivity;
 
-			String frontActivityClassName =   componentInfo.getClassName();
+			String frontActivityClassName = componentInfo.getClassName();
 			String frontActivityPackageName = componentInfo.getPackageName();
 
 
@@ -249,7 +249,7 @@ public class service_main extends Service implements OnTouchListener{
 			if (found)
 				return;
 
-			String[] packageComponents =  frontActivityPackageName.split("\\.");
+			String[] packageComponents = frontActivityPackageName.split("\\.");
 
 			if (packageComponents.length > 0)
 				frontActivityPackageName = packageComponents[packageComponents.length-1];
@@ -277,60 +277,60 @@ public class service_main extends Service implements OnTouchListener{
 		prevTouchTime = event.getEventTime();
 
 
-        touchCnt++;
+		touchCnt++;
 
-        if (service_main.interval > touchCnt) {
-            return false;
-        }
+		if (service_main.interval > touchCnt) {
+			return false;
+		}
 
-        touchCnt = 0;
+		touchCnt = 0;
 
-        // filtering screen class
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		// filtering screen class
+		ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 
-        // get the info from the currently running task
-        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(2);
+		// get the info from the currently running task
+		List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(2);
 
-        ComponentName componentInfo = taskInfo.get(0).topActivity;
+		ComponentName componentInfo = taskInfo.get(0).topActivity;
 
-        String frontActivityClassName =   componentInfo.getClassName();
+		String frontActivityClassName = componentInfo.getClassName();
 
-        // HACK: KeyFlip of the crema shine
-        if (frontActivityClassName.contains("com.melon.wizard")) {
-            componentInfo = taskInfo.get(1).topActivity;
-            frontActivityClassName = componentInfo.getClassName();
-        }
-
-
-        //if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
-        //    String log =   "class : " + frontActivityClassName;
-        //    // Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
-        //    logToFile(log);
-        //}
-
-        //Toast.makeText(this, frontActivityClassName, Toast.LENGTH_SHORT).show();
-
-        int delayTime = service_main.timeInterval;
-
-        // filter top level class name
-        if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
-            Setting.FrontActivityInfo infoFound = null;
-            for (Setting.FrontActivityInfo info : frontActivityInfos) {
-                if (info.getClassName().equals(frontActivityClassName)) {
-                    infoFound = info;
-                    break;
-                }
-            }
-
-            if (infoFound != null)
-                delayTime = infoFound.getRefreshDelaytime();
-            else
-                return false;
-        }
+		// HACK: KeyFlip of the crema shine
+		if (frontActivityClassName.contains("com.melon.wizard")) {
+			componentInfo = taskInfo.get(1).topActivity;
+			frontActivityClassName = componentInfo.getClassName();
+		}
 
 
+		//if (prefs.getBoolean(Setting.keyLogFrontActivityClassname, false)) {
+		//	String log = "class : " + frontActivityClassName;
+		//	// Toast.makeText(service_main.this, log, Toast.LENGTH_LONG).show();
+		//	logToFile(log);
+		//}
 
-        _handler.sendEmptyMessageDelayed(0, delayTime);
+		//Toast.makeText(this, frontActivityClassName, Toast.LENGTH_SHORT).show();
+
+		int delayTime = service_main.timeInterval;
+
+		// filter top level class name
+		if (prefs.getBoolean(Setting.keyActivityFilter, false)) {
+			Setting.FrontActivityInfo infoFound = null;
+			for (Setting.FrontActivityInfo info : frontActivityInfos) {
+				if (info.getClassName().equals(frontActivityClassName)) {
+					infoFound = info;
+					break;
+				}
+			}
+
+			if (infoFound != null)
+				delayTime = infoFound.getRefreshDelaytime();
+			else
+				return false;
+		}
+
+
+
+		_handler.sendEmptyMessageDelayed(0, delayTime);
 		return false;
 	}
 
