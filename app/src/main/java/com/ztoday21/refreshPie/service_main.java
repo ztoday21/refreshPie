@@ -55,7 +55,7 @@ public class service_main extends Service implements OnTouchListener{
 	public Handler _handler = new Handler()
 	{
 		private void logToFile(String activityClassName) {
-			final String filePath =Environment.getExternalStorageDirectory() + "/frontactivity.txt";
+			final String filePath = Environment.getExternalStorageDirectory() + "/frontactivity.txt";
 
 
 			try {

@@ -23,9 +23,6 @@ public class FrontActivityInfoEditDlg extends Dialog implements View.OnClickList
 
 	public FrontActivityInfoEditDlg(Context context) {
 		super(context);
-
-
-
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {
