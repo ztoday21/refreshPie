@@ -86,7 +86,11 @@ public class service_main extends Service implements OnTouchListener{
 					return;
 				case USE_EPDBLK:
 					try {
-						java.lang.Process process = Runtime.getRuntime().exec("/system/bin/epdblk 10");
+						String cmd = "/system/bin/epdblk 10";
+						if (prefs.getBoolean(Setting.useFullRefresh, true)) {
+							cmd += " 1";
+						}
+						java.lang.Process process = Runtime.getRuntime().exec(cmd);
 						process.getInputStream().close();
 						process.getOutputStream().close();
 						process.getErrorStream().close();

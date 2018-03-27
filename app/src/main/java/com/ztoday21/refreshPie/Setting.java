@@ -31,11 +31,13 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 	public static final String keyLogFrontActivityClassname = "LogFrontActivityClassname";
 	public static final String keyFrontActivityInfos = "frontActivityInfos";
 	public static final String keyInitialized = "keyInitialized_v117";
+	public static final String useFullRefresh = "UseFullRefresh";
 
 	private ListView lvActiveActivityClassnames;
 	private CheckBox cbAutostart;
 	private CheckBox cbActivityFilter;
 	private CheckBox cbLogFrontActivityClassname;
+	private CheckBox cbUseFullRefresh;
 
 	private ArrayList<FrontActivityInfo> frontActivityInfos;
 	private FrontActivityInfoAdapter adapter;
@@ -63,12 +65,14 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 		cbAutostart = (CheckBox) findViewById(R.id.checkBoxAutostart);
 		cbActivityFilter = (CheckBox) findViewById(R.id.checkBoxEnableActivityFilter);
 		cbLogFrontActivityClassname = (CheckBox) findViewById(R.id.checkboxLogFrontActivityClassname);
+		cbUseFullRefresh = (CheckBox) findViewById(R.id.checkboxUseFullRefresh);
 
 		SharedPreferences prefs = getSharedPreferences(main._saveName, MODE_PRIVATE);
 
 		cbAutostart.setChecked(prefs.getBoolean(keyAutostart, false));
 		cbActivityFilter.setChecked(prefs.getBoolean(keyActivityFilter, false));
 		cbLogFrontActivityClassname.setChecked(prefs.getBoolean(keyLogFrontActivityClassname, false));
+		cbUseFullRefresh.setChecked(prefs.getBoolean(useFullRefresh, true));
 
 		//list
 		frontActivityInfos = getFrontActivityInfos(this);
@@ -190,6 +194,7 @@ public class Setting extends Activity implements DialogInterface.OnDismissListen
 		ed.putBoolean(keyAutostart, cbAutostart.isChecked());
 		ed.putBoolean(keyActivityFilter, cbActivityFilter.isChecked());
 		ed.putBoolean(keyLogFrontActivityClassname, cbLogFrontActivityClassname.isChecked());
+		ed.putBoolean(useFullRefresh, cbUseFullRefresh.isChecked());
 
 
 		Gson gson = new Gson();
